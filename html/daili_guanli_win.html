@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        .error {
+            padding-top: 4rem;
+            font-size: 0.7rem;
+            margin: 1.1rem 0 0;
+            color: #666666;
+            font: 20px/1.5 'Microsoft YaHei', arial, tahoma, \5b8b\4f53, sans-serif;
+            text-align: center;
+        }
+        .error i {
+            font-size: 6rem;
+        }
+    </style>
+</head>
+
+<body>
+
+
+<header class="aui-navBar aui-navBar-fixed" style="background: linear-gradient(to right,#03bbf4 0,#d800ff 250%);" id="header">
+    <a tapmode onclick="closeWin()" class="aui-navBar-item-db">
+        <i class="icon icon-back"></i>
+
+    </a>
+    <div class="aui-center">
+        <span class="aui-center-title">  代理管理 </span>
+    </div>
+    <a tapmode onclick="closeWd()" class="aui-navBar-item-s" style="color: #c4c4c4;">
+        <i class="icon icon-Close-b"></i>关闭
+    </a>
+</header>
+
+<div id="err"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    //
+    var api_url = localStorage.getItem('api_url');
+
+    /////初始化 S /////
+    apiready = function () {
+
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        var ddtimer = setInterval(function () {
+            newLoingdata();
+        }, 5000)
+        ///登录判断
+        var user_id = localStorage.getItem('user_id');
+        if (user_id > 1) {
+
+            api.ajax({
+                url: api_url + '/login/login/imei.html',
+                method: 'get',
+                data: {
+                    values: {
+                        uid: user_id,
+                        mike_key: localStorage.getItem('mike_key')
+                    }
+                }
+            }, function (ret, err) {
+                if (ret) {
+                    if (ret.msg.imei != api.deviceId) {
+                        localStorage.setItem('user_id', '');
+                        localStorage.setItem('user_name', '');
+                        localStorage.setItem('user_time', '');
+                        api.sendEvent({
+                            name: 'newLoingdata',
+                            extra: {}
+                        });
+
+                        api.closeWin({});
+
+                        api.alert({
+                            title: '您已在其他设备登陆！账号已强制下线',
+                            msg: '请重新登陆',
+                        });
+                        clearInterval(ddtimer); //清除定时器
+
+                        return;
+                    }
+                } else {
+
+                }
+            });
+
+        }
+        ////登录判断
+        api.openFrame({
+            name: 'video_frame',
+            url: api.pageParam.url,
+            progress: {
+                type: "page",
+                color: "#6dd26d"
+            },
+            allowEdit: true,
+            rect: {
+                x: 0,
+                y: $api.offset($api.byId('header')).h,
+                w: 'auto',
+                h: 'auto'
+            }
+        });
+
+    };
+
+    /////初始化结束/////
+
+    function newLoingdata() {
+        api.parseTapmode();
+        api.ajax({
+            url: api_url + '/login/login/sign.html',
+            method: 'get',
+            data: {
+                values: {
+                    uid: localStorage.getItem('user_id'),
+                    mike_key: localStorage.getItem('mike_key')
+                }
+            }
+        }, function (ret, err) {
+            if (ret) {
+                var moneys = $api.byId('moneys');
+                moneys.innerHTML = ret.msg['je'] + '元';
+
+
+            }
+
+
+        });
+
+
+        api.parseTapmode();
+        api.ajax({
+            url: api_url + '/login/login/sign.html',
+            method: 'get',
+            data: {
+                values: {
+                    uid: localStorage.getItem('user_id'),
+                    mike_key: localStorage.getItem('mike_key')
+                }
+            }
+        }, function (ret, err) {
+            if (ret) {
+                var money = $api.byId('money');
+                money.innerHTML = ret.msg['ds'] + '点';
+
+
+            }
+
+
+        });
+
+
+    }
+
+    //获取数据
+
+
+    //////////////////////   返回  方法    closeWin     S //////////////////////
+    function closeWin() {
+        api.historyBack({
+            frameName: 'video_frame'
+        }, function (ret, err) {
+            if (!ret.status) {
+                api.closeWin();
+            }
+        });
+
+    }
+
+    //////////////////////   返回  方法    closeWd     E //////////////////////
+
+    //////////////////////   关闭  方法    closeWd     S //////////////////////
+    function closeWd() {
+        api.closeWin();
+    }
+
+    //////////////////////   关闭  方法    closeWd     E //////////////////////
+
+    //////////////////////   刷新  方法    shuaxin     S //////////////////////
+    function shuaxin() {
+        var jsfuns = 'history.go(0);';
+        api.execScript({
+            frameName: 'video_frame',
+            script: jsfuns
+        });
+    }
+
+    //////////////////////   刷新  方法    shuaxin     E //////////////////////
+</script>
+
+</html>

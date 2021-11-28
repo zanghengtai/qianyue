@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" /> 
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		    <link rel="stylesheet" type="text/css" href="../css/myui.css" />
+
+
+</head>
+<body>
+   
+		<header class="aui1-navBar aui-navBar-fixed" style="background: #fff;" id="aui-header">
+		                    <a  onclick="closeWin()" class="aui1-navBar-item" >
+		                  <i class="icon icon-back"></i>
+		                    </a>
+		                    <div class="aui-center">
+		                    </div>
+		
+		                    <a  onclick="clearR()" class="aui-navBar-item" style="color: #725f5f;"  >
+		                  <i class="icon"></i>
+		                    </a>
+		
+		                </header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+
+
+	<style>
+	.aui1-navBar {
+    height: 0px;
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    background-color: none;
+    z-index: 1002;
+    background: #0990ffc4;
+}
+
+.aui1-navBar-item {
+    height: 140px;
+    min-width: 30%;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 25%;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    padding: 0 0.9rem;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #ff1a72;
+    position: relative;
+}
+	   		</style>
+</head>
+
+
+<body style="background-color:#ff5a24">
+
+
+  <div>
+    <img src="../image/s-1.png" alt="" width="100%">
+  </div>
+  <div style="width:200px; margin:0 auto; height:0 auto;" id="box">
+    <p style="text-align:center">
+    <img src="../image/faxia1n.png" />
+  </p>
+  </div>
+
+  <div>
+    <img src="../image/x-1.png" alt="" width="100%">
+  </div>
+
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript">
+  var api_url = localStorage.getItem('api_url');
+  apiready = function(){
+      var url = api.pageParam.url;
+      var hongbaoid = $api.byId('box');
+      //var img = '<img src="http://api.k780.com:88/?app=qr.get&data='+url+'"/>';
+      var img = "<img src="+localStorage.getItem('erweima_url')+url+"/>";
+      // var img = '<img src="http://qr.liantu.com/api.php?text='+url+'"/>';
+    //  alert(img);
+      hongbaoid.innerHTML = img;
+    }
+  function closeWin(){
+      api.closeWin({
+      });
+  }
+</script>
+</html>

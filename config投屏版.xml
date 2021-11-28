@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget id="A6179421946781" security="false" version="0.0.1">
+  <name>热火影视</name>
+  <description>Example For APICloud.</description>
+  <author email="developer@apicloud.com" href="http://www.apicloud.com">Developer</author>
+  <content src="index.html"/>
+  <preference name="pageBounce" value="false"/>
+  <preference name="appCertificateVerify" value="false"/>
+  <preference name="appBackground" value="rgba(0,0,0,0.0)"/>
+  <preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
+  <preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
+  <preference name="hScrollBarEnabled" value="false"/>
+  <preference name="vScrollBarEnabled" value="false"/>
+  <preference name="autoLaunch" value="true"/>
+  <preference name="fullScreen" value="false"/>
+  <preference name="autoUpdate" value="true"/>
+  <preference name="smartUpdate" value="true"/>
+  <preference name="debug" value="false"/>
+  <preference name="customRefreshHeader" value="UIPullRefreshFlash"/>
+  <preference name="statusBarAppearance" value="true"/>
+  <permission name="readPhoneState"/>
+  <permission name="camera"/>
+  <permission name="record"/>
+  <permission name="location"/>
+  <permission name="fileSystem"/>
+  <permission name="internet"/>
+  <permission name="bootCompleted"/>
+  <permission name="hardware"/>
+  	<preference name="forbiddenSchemes"
+	value="^weixin://,^alipays://,^alipay://,^mqq://,^http://,^https://,^mqqbrowser://,^﻿webBrowser//" />
+<!--   <preference name="forbiddenSchemes"
+              value="^weixin://,^http://,^https://,^﻿webBrowser//"/> -->
+  <!--<preference name="forbiddenSchemes"-->
+              <!--value="^weixin://,^alipays://,^alipay://,^mqq://,^wechat://,^http://,^https://,^mqqwpaopenid://,^mqqwpa://,^mqqapi://,^mqqbrowser://,^browser://,^mttbrowser://,^﻿webBrowser//"/>-->
+  <feature name="wxPayPlus">
+    <param name="urlScheme" value="wxa6567137b42c8e69"/>
+    <param name="apiKey" value="wxa6567137b42c8e69"/>
+    <param name="apiSecret" value="5a47f831cdbeb15a89a7926bdeed87c9"/>
+  </feature>
+  <!--投屏模块官方售价999元 有需要的联系我微信 低价渠道200-300-->
+  <!--投屏模块官方售价999元 有需要的联系我微信 低价渠道200-300-->
+  <!--投屏模块官方售价999元 有需要的联系我微信 低价渠道200-300-->
+  <feature name="leCast">
+    <param name="lecastKey" value="18143"/>
+    <param name="lecastSecret" value="806d430a8f2518151d44e2872594813f"/>
+  </feature>
+</widget>

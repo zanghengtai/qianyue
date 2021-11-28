@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auislide.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <style type="text/css">
+        html,
+        body {
+            background-color: #000;
+            width: 100%;
+            height: 100%;
+        }
+        #dlna {
+            display:none;
+        }
+        .dlna {
+            width: 30px;
+            height: 30px;
+            float: right;
+            margin: 10px;
+        }
+        .mike-txt-title {
+            background: linear-gradient(to right, red, blue);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+<header class="aui-bar aui-bar-nav" id="header" style="background:linear-gradient(to right,#03bbf4 0,#d800ff 250%);color:#c4c4c4;position: relative;padding-top:25px;">
+    <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+        &nbsp; <span class="aui-iconfont aui-icon-left" style=color:#c4c4c4 ></span>
+    </a>
+    <div id="title" class="aui-title mike-txt-title" ><b>正在播放</b></div>
+    <!--<a id="play" class="aui-btn aui-pull-right" style=color:#c4c4c4 tapmode onclick="jieXi()">-->
+        <!--<i class="icon icon-genghuanxianlu-b"></i>  更换线路-->
+    <!--</a>-->
+</header>
+<!--投屏模块官方售价999元 有需要的联系我微信 低价渠道200-300-->
+<!--投屏模块官方售价999元 有需要的联系我微信 低价渠道200-300-->
+<!--投屏模块官方售价999元 有需要的联系我微信 低价渠道200-300-->
+<a id=dlna tapmode onclick="browse()" class="" style="color: #c4c4c4;">
+    <img src="../image/touping.png" class="dlna" />
+    <b style="float:right;line-height:55px;font-size:0.5rem;">支持投屏电视端播放,点击投屏图标</b>
+</a>
+<!--投屏模块官方售价999元 有需要的联系我微信 低价渠道200-300-->
+<!--投屏模块官方售价999元 有需要的联系我微信 低价渠道200-300-->
+<!--投屏模块官方售价999元 有需要的联系我微信 低价渠道200-300-->
+<input type="hidden" name="url1" id="url1" value="" />
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/mike_no.js"></script>
+<script type="text/javascript" src="../script/date.min.js"></script>
+<script type="text/javascript">
+    var leCastDemo = null;
+    var uzmoduledemo = null;
+    var TVURL = "";
+    apiready = function() {
+        api.setScreenOrientation({ orientation:'auto' });
+        leCastDemo = api.require('leCast');
+        leCastDemo.initLeCast(); //模块初始化方法，必须在所有方法调用前调用
+        uzmoduledemo = api.require('androidBrowser');
+        api.parseTapmode();
+        var url1 = $api.byId('url1');
+        url1.value = api.pageParam.video;
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        var headerPos = $api.offset(header);
+        var body_h = $api.offset($api.dom('body')).h;
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            api.setScreenOrientation({
+                orientation: 'portrait_up'
+            });
+            api.closeWin();
+        });
+        var param = {
+            /*
+            x:浏览器窗口X位置，默认0
+            y:浏览器窗口y位置，默认0
+            w:浏览器宽度，默认满屏
+            h:浏览器高度，默认满屏
+            */
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight + 50,
+                w: 'auto',
+                h: 'auto',
+            }, //w,h等于0代表横向满屏和纵向满屏
+            fixedOn: "", //浏览器依附在哪个window,不传或传空 为 当前Window，默认当前当前Window
+            fixed: true, //浏览器是否随frame或Window滑动，默认当前当前true
+            url: api.pageParam.video, //要加载的url,可选项
+            browserBg: "#F0F0F0", //可选
+            timeout: 7, //超时时间,指加载页面完毕后等待多少秒，超过这个时间还没收到视频地址，则认为解析视频地址失败。默认7秒
+
+        };
+        uzmoduledemo.openView(param, function(ret, err) {
+            //alert(JSON.stringify(ret));
+            if (ret.result == '1') {
+                TVURL = ret.VideoUrl;
+                var dlna = $api.byId('dlna');
+                dlna.style = "display:block";
+                uzmoduledemo.closeView( function(ret, err){
+                    //alert(JSON.stringify(ret));
+                });
+            }
+            /*
+            返回值：
+            result：1找到视频，2加载完毕
+            MainUrl：参数传入的url字段
+            VideoUrl：解析到的视频地址
+
+            */
+        });
+        var browser = api.require('webBrowser');
+        browser.openView({
+            url: api.pageParam.video,
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight + 45,
+                w: 'auto',
+                h: 'auto',
+            }
+        }, function(ret, err) {
+            //alert(JSON.stringify(ret));
+            switch (ret.state) {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
+            };
+        });
+        if (api.pageParam.needRecordHistory) {
+            record_play_history();
+        } else {
+            //
+        }
+    }
+    function getCaption(obj) {
+        var index = obj.lastIndexOf("\=");
+        obj = obj.substring(index + 1, obj.length);
+        return obj;
+    }
+    function closeWin() {
+        api.setScreenOrientation({
+            orientation: 'portrait_up'
+        });
+        api.closeWin();
+    }
+    function record_play_history() {
+        //alert(api.pageParam.title);
+        api.ajax({
+            url: localStorage.getItem('api_url')+'/login/login/jilu?uid=3',
+            data: {
+                values: {
+                    uid: localStorage.getItem('user_id'),
+                    title: api.pageParam.title,
+                    url: api.pageParam.srcUrl,
+                    time: new Date().format('yyyy-MM-dd hh:mm:ss'),
+                    ping: getPing(api.pageParam.srcUrl)
+                }
+            }
+        }, function(ret, err) {});
+    }
+    function getPing(url) {
+        if (url.indexOf("youku.com") > 0) {
+            return '优酷';
+        } else if (url.indexOf("iqiyi.com") > 0) {
+            return '爱奇艺';
+        } else if (url.indexOf("v.qq.com") > 0) {
+            return "腾讯"
+        } else if (url.indexOf("tv.sohu.com") > 0) {
+            return "搜狐"
+        } else if (url.indexOf("v.qq.com") > 0) {
+            return "pptv"
+        } else if (url.indexOf("pptv.com") > 0) {
+            return "芒果"
+        } else if (url.indexOf("mgtv.com") > 0) {
+            return "M1905"
+        } else if (url.indexOf("1905.com") > 0) {
+            return "暴风"
+        } else if (url.indexOf("baofeng.com") > 0) {
+            return "乐视"
+        } else if (url.indexOf("le.com") > 0) {
+            return "风行"
+        } else if (url.indexOf("xxooweizhiurl.com") > 0) {
+            return "未知"
+        }
+    }
+</script>
+</html>
